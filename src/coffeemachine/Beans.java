@@ -4,6 +4,28 @@ package coffeemachine;
 public abstract class Beans {
     
     String name;
+    double water, coffee;
+
+    public Beans() {
+    }
+    
+    void options(boolean single, boolean esp){}
+    
+    public double getWater() {
+        return water;
+    }
+
+    public void setWater(double water) {
+        this.water = water;
+    }
+
+    public double getCoffee() {
+        return coffee;
+    }
+
+    public void setCoffee(double coffee) {
+        this.coffee = coffee;
+    }
     double calories;
     double caffeine;
     
@@ -12,7 +34,7 @@ public abstract class Beans {
     protected void setName(String name) {
         this.name = name;
     }
-
+    
     protected void setCalories(double calories) {
         this.calories = calories;
     }
@@ -32,6 +54,4 @@ public abstract class Beans {
     public double getCaffeine() {
         return caffeine;
     }
-    
-    
 }
