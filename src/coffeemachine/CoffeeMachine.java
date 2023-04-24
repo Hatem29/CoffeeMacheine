@@ -1,7 +1,5 @@
 package coffeemachine;
 
-import java.util.Scanner;
-
 public class CoffeeMachine {
     
     private Grinder grinder;
@@ -31,9 +29,12 @@ public class CoffeeMachine {
     public void setBean(Beans bean) {
         this.bean = bean;
     }
-
-    public CoffeeMachine() {
-    }
     
+    public CoffeeMachine()
+    {
+        grinder = new Grinder();
+        tank = new Tank();
+        bean = new Beans();
+    }
     
 }

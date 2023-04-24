@@ -34,10 +34,11 @@ public class Robusta extends Beans{
             coffee = 14;
             water = 220;
         }
-                    
+        
+        super.setCalories(1 * coffee); //set calories
+        super.setCaffeine(0.075 * coffee); //set caffein
     }
-    
-    @Override
+
     String getInfo()
     {
         String info = "";

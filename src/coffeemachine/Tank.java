@@ -13,7 +13,12 @@ public class Tank {
     }
 
     public void refillWater() {
-        this.water = 500;
+        this.water += 500;
+        if(water > waterCap)
+        {
+            water = waterCap;
+            throw new CoffeeMachineExceptions("Water overflow");
+        }
     }
 
     public double getRobusta() {
@@ -22,6 +27,11 @@ public class Tank {
 
     public void refillRobusta() {
         this.Robusta += 100;
+        if(Robusta > robustaCap)
+        {
+            Robusta = robustaCap;
+            throw new CoffeeMachineExceptions("Robusta beans overflow");
+        }
     }
 
     public double getArabica() {
@@ -30,16 +40,30 @@ public class Tank {
 
     public void refillArabica() {
         this.Arabica += 100;
+        if(Arabica > arabicaCap)
+        {
+            Arabica = arabicaCap;
+            throw new CoffeeMachineExceptions("Arabica beans overflow");
+        }
     }
     
     void drain(double coffee, double water, String name)
     {
+        if(this.water < water)
+            throw new CoffeeMachineExceptions("Not enough water");
+            
         this.water -= water;
         if(name.equals("Arabica")){
-            Arabica -= coffee;
+            if(this.Arabica < coffee)
+                throw new CoffeeMachineExceptions("Not enough Arabica beans");
+                
+            this.Arabica -= coffee;
         }
         else{
-            Robusta -= coffee;
+            if(this.Robusta < coffee)
+                throw new CoffeeMachineExceptions("Not enough Arabica beans");
+            
+            this.Robusta -= coffee;
         }
     }
     

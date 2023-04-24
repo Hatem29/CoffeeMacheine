@@ -1,12 +1,13 @@
 
 package coffeemachine;
 
-public abstract class Beans {
+public class Beans {
     
     String name;
     double water, coffee;
 
     public Beans() {
+        
     }
     
     void options(boolean single, boolean esp){}
@@ -29,8 +30,6 @@ public abstract class Beans {
     double calories;
     double caffeine;
     
-    abstract String getInfo();  
-
     protected void setName(String name) {
         this.name = name;
     }
