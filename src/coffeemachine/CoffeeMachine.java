@@ -1,7 +1,10 @@
 package coffeemachine;
 
+import java.sql.*;
+
 public class CoffeeMachine {
-    
+
+   
     private Grinder grinder;
     private Tank tank;
     private Beans bean;
@@ -29,12 +32,11 @@ public class CoffeeMachine {
     public void setBean(Beans bean) {
         this.bean = bean;
     }
-    
-    public CoffeeMachine()
-    {
+
+    public CoffeeMachine() {
         grinder = new Grinder();
         tank = new Tank();
         bean = new Beans();
     }
-    
+
 }

@@ -18,6 +18,7 @@ public class Robusta extends Beans{
         {
             coffee = 7;
             water = 30;
+            
         }
         else if(esp && !single)
         {
@@ -37,6 +38,7 @@ public class Robusta extends Beans{
         
         super.setCalories(1 * coffee); //set calories
         super.setCaffeine(0.075 * coffee); //set caffein
+        
     }
 
     String getInfo()

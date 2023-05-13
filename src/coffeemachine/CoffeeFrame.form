@@ -64,7 +64,7 @@
                   <EmptySpace min="-2" pref="113" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="jSeparator3" min="-2" pref="597" max="-2" attributes="0"/>
@@ -78,7 +78,7 @@
                           </Group>
                           <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="jSeparator1" min="-2" pref="17" max="-2" attributes="0"/>
-                          <EmptySpace pref="97" max="32767" attributes="0"/>
+                          <EmptySpace pref="109" max="32767" attributes="0"/>
                           <Component id="jPanel5" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
                       </Group>
@@ -485,9 +485,6 @@
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="trayCup">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0"/>
-          </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel6">
           <Properties>

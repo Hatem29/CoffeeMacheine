@@ -7,6 +7,7 @@ public class Tank {
     final double waterCap = 2000;
     final double robustaCap = 500;
     final double arabicaCap = 500;
+    MyLogger l=new MyLogger();
 
     public double getWater() {
         return water;
@@ -19,6 +20,7 @@ public class Tank {
             water = waterCap;
             throw new CoffeeMachineExceptions("Water overflow");
         }
+        l.log(water, Arabica, Robusta, CoffeeFrame.cups);
     }
 
     public double getRobusta() {
@@ -32,6 +34,7 @@ public class Tank {
             Robusta = robustaCap;
             throw new CoffeeMachineExceptions("Robusta beans overflow");
         }
+        l.log(water, Arabica, Robusta, CoffeeFrame.cups);
     }
 
     public double getArabica() {
@@ -45,6 +48,7 @@ public class Tank {
             Arabica = arabicaCap;
             throw new CoffeeMachineExceptions("Arabica beans overflow");
         }
+        l.log(water, Arabica, Robusta, CoffeeFrame.cups);
     }
     
     void drain(double coffee, double water, String name)
@@ -53,6 +57,7 @@ public class Tank {
             throw new CoffeeMachineExceptions("Not enough water");
             
         this.water -= water;
+        
         if(name.equals("Arabica")){
             if(this.Arabica < coffee)
                 throw new CoffeeMachineExceptions("Not enough Arabica beans");
@@ -61,10 +66,11 @@ public class Tank {
         }
         else{
             if(this.Robusta < coffee)
-                throw new CoffeeMachineExceptions("Not enough Arabica beans");
+                throw new CoffeeMachineExceptions("Not enough Robusta beans");
             
             this.Robusta -= coffee;
         }
+        l.log(this.water, Arabica, Robusta, CoffeeFrame.cups);
     }
     
     public Tank() {

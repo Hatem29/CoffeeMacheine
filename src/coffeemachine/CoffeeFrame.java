@@ -5,7 +5,9 @@
  */
 package coffeemachine;
 
+import java.awt.Point;
 import javax.swing.JOptionPane;
+import java.sql.*;
 
 /**
  *
@@ -14,10 +16,33 @@ import javax.swing.JOptionPane;
 public class CoffeeFrame extends javax.swing.JFrame {
 
     CoffeeMachine CM = new CoffeeMachine();
-    int cups = 0;
-    
-    public CoffeeFrame() {
+    public static int cups ;
+    MyLogger l = new MyLogger();
+
+    CoffeeFrame() {
         initComponents();
+
+        try {
+            Connection con = l.getconnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM `tank`");
+            while (rs.next()) {
+                cups = rs.getInt(5);
+                CM.getTank().water = rs.getDouble(2);
+                CM.getTank().Arabica = rs.getDouble(3);
+                CM.getTank().Robusta = rs.getDouble(4);
+                trayCup.setText("" + cups);
+                tankText.setText("water level: " + CM.getTank().water + " ml" + "\nArabica beans level : " + CM.getTank().Arabica + " g" + "\nRobusta beans level : " + CM.getTank().Robusta + " g");
+                
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean contains(Point p) {
+        return super.contains(p); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     /**
@@ -254,8 +279,6 @@ public class CoffeeFrame extends javax.swing.JFrame {
             }
         });
 
-        trayCup.setText("0");
-
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Refill"));
 
         jButton2.setText("Robusta");
@@ -313,7 +336,7 @@ public class CoffeeFrame extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(113, 113, 113))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(66, 66, 66)
+                .addGap(54, 54, 54)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -325,7 +348,7 @@ public class CoffeeFrame extends javax.swing.JFrame {
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(40, 40, 40)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(63, 63, 63))))
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -417,7 +440,7 @@ public class CoffeeFrame extends javax.swing.JFrame {
     private void RobActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RobActionPerformed
         Espresso.setEnabled(true);
         Amricano.setEnabled(true);
-        
+
         Start.setEnabled(false);
     }//GEN-LAST:event_RobActionPerformed
 
@@ -425,8 +448,8 @@ public class CoffeeFrame extends javax.swing.JFrame {
         Espresso.setEnabled(false);
         Amricano.setEnabled(false);
         Single.setEnabled(false);
-        Double.setEnabled(false);             
-        
+        Double.setEnabled(false);
+
         Start.setEnabled(true);
     }//GEN-LAST:event_ArabActionPerformed
 
@@ -455,43 +478,55 @@ public class CoffeeFrame extends javax.swing.JFrame {
         Single.setEnabled(false);
         Double.setEnabled(false);
         cups++;
-        
+
         Beans b;
-        if(Arab.isSelected())
+        if (Arab.isSelected()) {
             b = new Arabica();
-        else
-        {
+            String message = "type : arabica," + " caffeine : " + b.getCaffeine() + ", calories : " + b.getCalories();
+            l.log(message);
+        } else {
             b = new Robusta();
-            
+
             boolean single = Single.isSelected();
-            boolean esp = Espresso.isSelected();      
+            boolean esp = Espresso.isSelected();
             b.options(single, esp);
+            String message = "type : robusta,";
+            if (single) {
+                message += "single, ";
+            } else {
+                message += "double, ";
+            }
+            if (esp) {
+                message += "espresso, ";
+            } else {
+                message += "amricano, ";
+            }
+            message += " caffeine : " + b.getCaffeine() + ", calories : " + b.getCalories();
+            l.log(message);
+
         }
         CM.setBean(b);
-        Calo.setText(""+b.calories);
-        Caff.setText(""+b.caffeine);
+        Calo.setText("" + b.calories);
+        Caff.setText("" + b.caffeine);
         double water = CM.getBean().getWater();
 
         double coffee = CM.getBean().getCoffee();
-        try{
-        CM.getTank().drain(coffee, water, CM.getBean().getName());
-        }
-        catch(CoffeeMachineExceptions ex)
-        {
-            JOptionPane.showMessageDialog(null,"Exception : " + ex.getMessage());
+        try {
+            CM.getTank().drain(coffee, water, CM.getBean().getName());
+        } catch (CoffeeMachineExceptions ex) {
+            JOptionPane.showMessageDialog(null, "Exception : " + ex.getMessage());
             cups--;
         }
-        
-        tankText.setText("water level: " + CM.getTank().water+" ml"+"\nArabica beans level : " + CM.getTank().Arabica+" g"+"\nRobusta beans level : " + CM.getTank().Robusta+" g");
+
+        tankText.setText("water level: " + CM.getTank().water + " ml" + "\nArabica beans level : " + CM.getTank().Arabica + " g" + "\nRobusta beans level : " + CM.getTank().Robusta + " g");
 
         trayCup.setText("" + cups);
-        if(cups == 10)
-        {
+        if (cups >= 10) {
             Arab.setEnabled(false);
             Rob.setEnabled(false);
-            JOptionPane.showMessageDialog(null, "نضف لو سمحت، مش حلوة قدام الناس");
+            JOptionPane.showMessageDialog(null, "النظافة من الإيمان");
         }
-        
+
         Arab.setSelected(false);
         Rob.setSelected(false);
         Amricano.setSelected(false);
@@ -505,41 +540,38 @@ public class CoffeeFrame extends javax.swing.JFrame {
         trayCup.setText("" + cups);
         Arab.setEnabled(true);
         Rob.setEnabled(true);
+        double water = CM.getTank().water;
+        double Arabica = CM.getTank().Arabica;
+        double Robusta = CM.getTank().Robusta;
+        l.log(water, Arabica, Robusta, CoffeeFrame.cups);
     }//GEN-LAST:event_emptyTrayActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try
-        {
-        CM.getTank().refillRobusta();
+        try {
+            CM.getTank().refillRobusta();
+        } catch (CoffeeMachineExceptions ex) {
+            JOptionPane.showMessageDialog(null, "Exception : " + ex.getMessage());
         }
-        catch(CoffeeMachineExceptions ex)
-        {
-            JOptionPane.showMessageDialog(null,"Exception : " + ex.getMessage());
-        }
-        
-        tankText.setText("water level: " + CM.getTank().water+" ml"+"\nArabica beans level : " + CM.getTank().Arabica+" g"+"\nRobusta beans level : " + CM.getTank().Robusta+" g");
+
+        tankText.setText("water level: " + CM.getTank().water + " ml" + "\nArabica beans level : " + CM.getTank().Arabica + " g" + "\nRobusta beans level : " + CM.getTank().Robusta + " g");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try{
-        CM.getTank().refillArabica();
+        try {
+            CM.getTank().refillArabica();
+        } catch (CoffeeMachineExceptions ex) {
+            JOptionPane.showMessageDialog(null, "Exception : " + ex.getMessage());
         }
-        catch(CoffeeMachineExceptions ex)
-        {
-            JOptionPane.showMessageDialog(null,"Exception : " + ex.getMessage());
-        }
-        tankText.setText("water level: " + CM.getTank().water+" ml"+"\nArabica beans level : " + CM.getTank().Arabica+" g"+"\nRobusta beans level : " + CM.getTank().Robusta+" g");
+        tankText.setText("water level: " + CM.getTank().water + " ml" + "\nArabica beans level : " + CM.getTank().Arabica + " g" + "\nRobusta beans level : " + CM.getTank().Robusta + " g");
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try{
-        CM.getTank().refillWater();
+        try {
+            CM.getTank().refillWater();
+        } catch (CoffeeMachineExceptions ex) {
+            JOptionPane.showMessageDialog(null, "Exception : " + ex.getMessage());
         }
-        catch(CoffeeMachineExceptions ex)
-        {
-            JOptionPane.showMessageDialog(null,"Exception : " + ex.getMessage());
-        }
-        tankText.setText("water level: " + CM.getTank().water+" ml"+"\nArabica beans level : " + CM.getTank().Arabica+" g"+"\nRobusta beans level : " + CM.getTank().Robusta+" g");
+        tankText.setText("water level: " + CM.getTank().water + " ml" + "\nArabica beans level : " + CM.getTank().Arabica + " g" + "\nRobusta beans level : " + CM.getTank().Robusta + " g");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
